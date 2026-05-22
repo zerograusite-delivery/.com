@@ -126,7 +126,7 @@
       max-width: 1400px;
       margin: 0 auto;
       border-radius: 42px;
-      background: rgba(0,0,0,0.3);
+      background: transparent;  /* removido fundo escuro */
       box-shadow: 0 28px 48px -16px black, 0 0 0 1px rgba(245,176,66,0.3);
     }
     .slider-moderno {
@@ -156,13 +156,8 @@
       opacity: 1;
       z-index: 1;
     }
-    .slider-overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(105deg, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.5) 100%);
-      z-index: 2;
-      border-radius: 42px;
-    }
+    /* EFEITO ESCURO REMOVIDO COMPLETAMENTE: overlay foi excluído do HTML e nenhuma camada de cor escura sobre as imagens */
+    
     .slider-content {
       position: absolute;
       top: 50%;
@@ -389,7 +384,7 @@
       gap: 18px;
     }
 
-    /* CORREÇÃO: MODAL COM SCROLL GERAL */
+    /* MODAL COM SCROLL GERAL */
     .cart-modal {
       position: fixed;
       top: 0;
@@ -405,7 +400,7 @@
       padding: 28px;
       display: flex;
       flex-direction: column;
-      overflow-y: auto;  /* PERMITE ROLAR TODO O CONTEÚDO */
+      overflow-y: auto;
     }
     .cart-modal.open { right: 0; }
     .cart-modal-header {
@@ -572,12 +567,12 @@
   </button>
 </nav>
 
-<!-- SLIDER (somente imagens) -->
+<!-- SLIDER (sem overlay escuro) -->
 <div class="slider-section">
   <div class="slider-container">
     <div class="slider-moderno">
       <div class="hero-slider" id="heroSlider"></div>
-      <div class="slider-overlay"></div>
+      <!-- OVERLAY ESCURO REMOVIDO: nenhuma camada de cor ou gradiente escura sobre as imagens -->
       <div class="slider-content"></div>
       <div class="slider-dots" id="sliderDots"></div>
     </div>
@@ -606,8 +601,8 @@
       <div class="location-info">
         <h3><i class="fas fa-store"></i> Granito-Pernambuco</h3>
         <p style="margin: 12px 0 18px; color: #d6ceb0;">Entregamos com rapidez para todo o município e região</p>
-        <div class="address-detail"><i class="fas fa-location-dot" style="color:#F5B042;"></i> <span>Depósito Zero Grau- Av  Centro, Granito-PE</span></div>
-        <div class="address-detail"><i class="far fa-clock"></i> <span>terça a domingo 09h–22h •</span></div>
+        <div class="address-detail"><i class="fas fa-location-dot" style="color:#F5B042;"></i> <span>Depósito Zero Grau- Av Centro, Granito-PE</span></div>
+        <div class="address-detail"><i class="far fa-clock"></i> <span>terça a domingo 09h–22h</span></div>
         <div class="map-mock-icon"><i class="fas fa-map-marked-alt"></i> 📍 Próximo à Praça Matriz • Delivery e retirada no balcão</div>
       </div>
     </div>
@@ -632,11 +627,11 @@
   <div id="cartFormModal" class="cart-form-area hidden-form">
     <p><i class="fas fa-truck-fast"></i> Preencha para entrega</p>
     <div class="form-group"><label>Seu nome *</label><input type="text" id="clientNameModal" placeholder="Ex: João Silva"></div>
-    <div class="form-group"><label>WhatsApp *</label><input type="tel" id="clientPhoneModal" placeholder="(87)  0000-0000"></div>
+    <div class="form-group"><label>WhatsApp *</label><input type="tel" id="clientPhoneModal" placeholder="(87) 0000-0000"></div>
     <div class="form-group"><label>Endereço completo *</label><input type="text" id="clientAddressModal" placeholder="Rua, número, bairro, Granito/PE"></div>
     <div class="form-group"><label>Observações</label><textarea id="orderObsModal" rows="2" placeholder="Portão, referência..."></textarea></div>
     
-    <!-- OPÇÃO DE PAGAMENTO - PIX, DINHEIRO, CARTÃO -->
+    <!-- OPÇÃO DE PAGAMENTO -->
     <div class="form-group">
       <label>Forma de Pagamento *</label>
       <div class="payment-options">
@@ -652,8 +647,8 @@
 <div class="toast" id="toastMsgGlobal"></div>
 
 <script>
-  // SLIDER IMAGENS
-  const sliderImages = ["banner.png","zerograu.png","banner2.png","banner.png"];
+  // SLIDER IMAGENS (sem overlay escuro)
+  const sliderImages = ["banner.png","zerograu.png","banner2.png","banner3.jpeg","pod1.png"];
   let currentSlide = 0, slideInterval;
   const heroSlider = document.getElementById('heroSlider');
   const dotsContainer = document.getElementById('sliderDots');
@@ -695,7 +690,7 @@
   const sliderModerno = document.querySelector('.slider-moderno');
   if(sliderModerno) { sliderModerno.addEventListener('mouseenter', stopAutoSlide); sliderModerno.addEventListener('mouseleave', startAutoSlide); }
 
-  // PRODUTOS ATUALIZADOS (conforme lista do usuário)
+  // PRODUTOS (conforme lista do usuário)
   const categoriesData = [
     { 
       name: "Cervejas", 
@@ -712,7 +707,6 @@
         { id: 9, nome: "Corona Long Neck", preco: 8.00, img: "coronalongneck.jpg", desc: "355ml" },
         { id: 10, nome: "Heineken", preco: 8.00, img: "heineke.jpg", desc: "330ml" },
         { id: 11, nome: "Spaten Long Neck", preco: 6.00, img: "spaten.jpg", desc: "330ml" },
-        
       ] 
     },
     { 
@@ -724,28 +718,50 @@
         { id: 15, nome: "Pitú Lata", preco: 6.00, img: "pitulata2.jpg", desc: "Lata" },
         { id: 16, nome: "Montila", preco: 27.00, img: "montila.jpg", desc: "Cachaça" },
         { id: 17, nome: "Ypioca Amarela", preco: 22.00, img: "ypiocaamarela.jpg" },
-        { id: 18, nome: "51 Ouro", preco: 16.00, img: "51ouro.jpg", desc: "Cachaça" },
         { id: 18, nome: "Dreher", preco: 23.00, img: "dreher.jpg", desc: "Cachaça" },
+        { id: 19, nome: "51 Ouro", preco: 16.00, img: "51ouro.jpg", desc: "Cachaça" },
       ] 
     },
     { 
       name: "Energéticos", 
       icon: "⚡", 
       products: [
-        { id: 19, nome: "Safadão Energético", preco: 12.00, img: "safadao.jpeg" },
-        { id: 20, nome: "H2O Lata", preco: 4.00, img: "h20saborizada.jpeg" }
+        { id: 20, nome: "Safadão Energético", preco: 12.00, img: "safadao.jpeg" },
+        { id: 21, nome: "H2O Lata", preco: 4.00, img: "h20saborizada.jpeg" }
       ] 
     },
     { 
       name: "Refrigerantes & Águas", 
       icon: "🥤", 
       products: [
-        { id: 21, nome: "Água com gás", preco: 3.00, img: "aguacomgaz.jpg", desc: "500ml" },
-        { id: 22, nome: "Coca Cola 2L", preco: 12.00, img: "cocacola2.jpg", desc: "2 Litros" },
-        { id: 23, nome: "Refrigerante Lata", preco: 4.00, img: "refrilata.jpg", desc: "350ml (qualquer sabor)" },
-        { id: 24, nome: "Guaraná 2L", preco: 10.00, img: "guarana2.jpg", desc: "2 Litros" }
+        { id: 22, nome: "Água com gás", preco: 3.00, img: "aguacomgaz.jpg", desc: "500ml" },
+        { id: 23, nome: "Coca Cola 2L", preco: 12.00, img: "cocacola2.jpg", desc: "2 Litros" },
+        { id: 24, nome: "Refrigerante Lata", preco: 4.00, img: "refrilata.jpg", desc: "350ml (qualquer sabor)" },
+        { id: 25, nome: "Guaraná 2L", preco: 10.00, img: "guarana2.jpg", desc: "2 Litros" }
       ] 
-    }
+    },
+     { 
+      name: "Pod", 
+      icon: "⚡", 
+      products: [
+        { id: 26, nome: "pod - black  shepp 25 mil puffs", preco: 130.00, img: "pod1.png" },
+        { id: 27, nome: "ignite v155 ", preco: 130.00, img: "pod1.png" },
+        { id: 28, nome: "ignite v250", preco: 140.00, img: "pod1.png" },
+        { id: 29, nome: "dojo 40 mil puffs", preco: 130.00, img: "pod1.png" },
+        { id: 30, nome: "ignite 40 mil ", preco: 150.00, img: "pod1.png" },
+      ] 
+    },
+     { 
+      name: "Tirzepatida", 
+      icon: "⚡", 
+      products: [
+        { id: 31, nome: "Tirzepatida Dose 2,5mg", preco: 125.00, img: "dose1.png" },
+        { id: 32, nome: "Tirzepatida Dose 5.0mg", preco: 250.00, img: "dose1.png" },
+         { id: 33, nome: "Tirzepatida Dose 7.5mg", preco: 375.00, img: "dose1.png" },
+          { id: 34, nome: "Tirzepatida Dose 10mg", preco: 450.00, img: "dose1.png" },
+           { id: 35, nome: "Tirzepatida Dose 15mg", preco: 500.00, img: "dose1.png" },
+      ] 
+    },
   ];
 
   let cart = [];
@@ -760,7 +776,6 @@
   function hideFormInModal() { document.getElementById('cartFormModal').classList.add('hidden-form'); }
   function showFormInModal() { 
     document.getElementById('cartFormModal').classList.remove('hidden-form');
-    // Rolar suavemente até o formulário após ele aparecer
     setTimeout(() => {
       const formArea = document.getElementById('cartFormModal');
       formArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
